@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação do Tipo de Dado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <a href="semana1.html">Voltar</a>
+    <script>
+        let dado = prompt("Digite um dado:");
+
+let confirmar = confirm("Deseja verificar o tipo do dado informado?");
+
+let corpoPagina = document.body;
+
+if (confirmar) {
+
+    if (!isNaN(dado) && dado.trim() !== "") {
+        corpoPagina.innerHTML = "<p>O dado informado é um número.</p>";
+    } else {
+        corpoPagina.innerHTML = "<p>O dado informado é uma string.</p>";
+    }
+} else {
+    corpoPagina.innerHTML = "<p>Obrigado por visitar esta página.</p>";
+}
+    </script>
+    <button onclick="window.history.back();">Voltar</button>
+</body>
+</html>
