@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+    <style>
+        /* Estilos conforme especificações */
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #000;
+            text-align: center;
+        }
+
+        form {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 125%;
+            max-width: 600px;
+        }
+
+        label {
+            font-size: 10px;
+            color: #222;
+            opacity: 0.9;
+            display: block;
+            margin: 2px 10;
+        }
+
+        input, select {
+            font-size: 12px;
+            color: #999;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            font-size: 12px;
+            background-color: #eee;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .error {
+            color: red;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+    </style>
+    
+</head>
+<body>
+    <a href="semana4.html">Voltar</a>
+    <h1>Formulário de Cadastro</h1>
+    <form id="cadastroForm">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" onblur="validateNome()"><br>
+        <span id="nomeError" class="error"></span><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" onblur="validateEmail()"><br>
+        <span id="emailError" class="error"></span><br>
+
+        <label for="dataNascimento">Data de Nascimento:</label><br>
+        <input type="text" id="dataNascimento" name="dataNascimento" placeholder="dd/mm/aaaa" onblur="validateDataNascimento()"><br>
+        <span id="dataNascimentoError" class="error"></span><br>
+
+        <label for="telefoneFixo">Telefone Fixo:</label><br>
+        <input type="text" id="telefoneFixo" name="telefoneFixo" placeholder="(xx)xxxx-xxxx" onblur="validateTelefoneFixo()"><br>
+        <span id="telefoneFixoError" class="error"></span><br>
+
+        <label for="telefoneCelular">Telefone Celular:</label><br>
+        <input type="text" id="telefoneCelular" name="telefoneCelular" placeholder="(xx)xxxxx-xxxx" onblur="validateTelefoneCelular()"><br>
+        <span id="telefoneCelularError" class="error"></span><br>
+
+        <label for="curso">Curso:</label><br>
+        <input type="text" id="curso" name="curso" onblur="validateCurso()"><br>
+        <span id="cursoError" class="error"></span><br>
+
+        <label for="matricula">Matrícula:</label><br>
+        <input type="text" id="matricula" name="matricula" onblur="validateMatricula()"><br>
+        <span id="matriculaError" class="error"></span><br>
+
+        <label>Perfil:</label><br>
+        <input type="radio" id="professor" name="perfil" value="Professor" onclick="toggleFields()">
+        <label for="professor">Professor</label>
+        <input type="radio" id="aluno" name="perfil" value="Aluno" onclick="toggleFields()" checked>
+        <label for="aluno">Aluno</label><br><br>
+
+        <button type="submit" class="button" onclick="submitForm(event)">Enviar</button>
+        <button type="reset" class="button">Redefinir</button>
+    </form>
+
+    <script>
+        // Funções de validação
+        function validateNome() {
+            const nome = document.getElementById('nome').value;
+            const regex = /^[a-zA-Z]+\s[a-zA-Z]+$/;
+            if (!regex.test(nome)) {
+                document.getElementById('nomeError').textContent = 'Nome inválido (Formato: xxx xxx)';
+                return false;
+            } else {
+                document.getElementById('nomeError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!regex.test(email)) {
+                document.getElementById('emailError').textContent = 'Email inválido (Formato: xxx@xxx.xxx)';
+                return false;
+            } else {
+                document.getElementById('emailError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateDataNascimento() {
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/;
+            if (!regex.test(dataNascimento)) {
+                document.getElementById('dataNascimentoError').textContent = 'Data inválida (Formato: dd/mm/aaaa)';
+                return false;
+            } else {
+                document.getElementById('dataNascimentoError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateTelefoneFixo() {
+            const telefoneFixo = document.getElementById('telefoneFixo').value;
+            const regex = /^\(\d{2}\)\d{4}-\d{4}$/;
+            if (!regex.test(telefoneFixo)) {
+                document.getElementById('telefoneFixoError').textContent = 'Telefone fixo inválido (Formato: (xx)xxxx-xxxx)';
+                return false;
+            } else {
+                document.getElementById('telefoneFixoError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateTelefoneCelular() {
+            const telefoneCelular = document.getElementById('telefoneCelular').value;
+            const regex = /^\(\d{2}\)\d{5}-\d{4}$/;
+            if (!regex.test(telefoneCelular)) {
+                document.getElementById('telefoneCelularError').textContent = 'Celular inválido (Formato: (xx)xxxxx-xxxx)';
+                return false;
+            } else {
+                document.getElementById('telefoneCelularError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateCurso() {
+            const curso = document.getElementById('curso').value;
+            if (curso.trim() === '') {
+                document.getElementById('cursoError').textContent = 'O campo curso é obrigatório';
+                return false;
+            } else {
+                document.getElementById('cursoError').textContent = '';
+                return true;
+            }
+        }
+
+        function validateMatricula() {
+            const matricula = document.getElementById('matricula').value;
+            const perfil = document.querySelector('input[name="perfil"]:checked').value;
+            const length = perfil === 'Professor' ? 5 : 10;
+            if (matricula.length !== length) {
+                document.getElementById('matriculaError').textContent = `Matrícula inválida (Deve conter ${length} dígitos)`;
+                return false;
+            } else {
+                document.getElementById('matriculaError').textContent = '';
+                return true;
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault(); // Evita o reload da página
+            if (validateNome() && validateEmail() && validateDataNascimento() &&
+                validateTelefoneFixo() && validateTelefoneCelular() && validateCurso() && validateMatricula()) {
+                alert('Formulário enviado com sucesso!');
+                // Armazenar os dados nas classes
+                const nome = document.getElementById('nome').value;
+                const email = document.getElementById('email').value;
+                const dataNascimento = document.getElementById('dataNascimento').value;
+                const telefoneFixo = document.getElementById('telefoneFixo').value;
+                const telefoneCelular = document.getElementById('telefoneCelular').value;
+                const curso = document.getElementById('curso').value;
+                const matricula = document.getElementById('matricula').value;
+                const perfil = document.querySelector('input[name="perfil"]:checked').value;
+
+                let pessoa;
+                if (perfil === 'Professor') {
+                    pessoa = new Professor(nome, email, dataNascimento, telefoneFixo, telefoneCelular, matricula);
+                } else {
+                    pessoa = new Aluno(nome, email, dataNascimento, telefoneFixo, telefoneCelular, matricula, curso);
+                }
+
+                console.log(pessoa); // Exibe no console o objeto criado
+            } else {
+                alert('Por favor, corrija os erros no formulário.');
+            }
+        }
+
+        function toggleFields() {
+            const perfil = document.querySelector('input[name="perfil"]:checked').value;
+            const cursoField = document.getElementById('curso');
+            const matriculaLabel = document.querySelector('label[for="matricula"]');
+
+            if (perfil === 'Professor') {
+                cursoField.disabled = true;
+                matriculaLabel.textContent = 'Matrícula (5 dígitos):';
+            } else {
+                cursoField.disabled = false;
+                matriculaLabel.textContent = 'Matrícula (10 dígitos):';
+            }
+        }
+
+        // Classes Pessoa, Aluno e Professor
+        class Pessoa {
+            constructor(nome, email, dataNascimento, telefoneFixo, telefoneCelular) {
+                this.nome = nome;
+                this.email = email;
+                this.dataNascimento = dataNascimento;
+                this.telefoneFixo = telefoneFixo;
+                this.telefoneCelular = telefoneCelular;
+            }
+        }
+
+        class Aluno extends Pessoa {
+            constructor(nome, email, dataNascimento, telefoneFixo, telefoneCelular, matricula, curso) {
+                super(nome, email, dataNascimento, telefoneFixo, telefoneCelular);
+                this.matricula = matricula;
+                this.curso = curso;
+            }
+        }
+
+        class Professor extends Pessoa {
+            constructor(nome, email, dataNascimento, telefoneFixo, telefoneCelular, matricula) {
+                super(nome, email, dataNascimento, telefoneFixo, telefoneCelular);
+                this.matricula = matricula;
+            }
+        }
+    </script>
+</body>
+</html>

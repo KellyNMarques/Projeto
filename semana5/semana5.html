@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador de Tarefas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    input {
+      width: calc(100% - 22px); /* Subtrai o padding e borda */
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    li {
+      background-color: #fff;
+      margin: 5px 0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: green;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    .button-group button {
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .details-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .details-btn:hover {
+      background-color: #1976D2;
+    }
+
+    .complete-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .complete-btn:hover {
+      background-color: #45a049;
+    }
+
+    .remove-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .remove-btn:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gerenciador de Tarefas</h1>
+
+    <!-- Formulário para adicionar tarefa -->
+    <input id="nomeTarefa" type="text" placeholder="Nome da Tarefa">
+    <input id="descricaoTarefa" type="text" placeholder="Descrição da Tarefa">
+    <button onclick="adicionarNovaTarefa()">Adicionar Tarefa</button>
+
+    <!-- Lista de tarefas -->
+    <ul id="listaTarefas"></ul>
+  </div>
+
+  <script>
+    // Função para criar uma nova tarefa
+    function criarTarefa(nome, descricao) {
+      return {
+        nome: nome,
+        descricao: descricao,
+        status: 'Pendente',
+        
+        concluir: function() {
+          this.status = 'Concluída'; // Método para concluir a tarefa
+        },
+        
+        detalhes: function() {
+          return `Nome: ${this.nome}\nDescrição: ${this.descricao}\nStatus: ${this.status}`;
+        }
+      };
+    }
+
+    // Função para gerenciar as tarefas
+    function gerenciadorDeTarefas() {
+      let tarefas = []; // Array privado de tarefas
+
+      return {
+        adicionarTarefa: function(tarefa) {
+          tarefas.push(tarefa); // Adiciona nova tarefa
+        },
+        
+        listarTarefas: function() {
+          return tarefas;
+        },
+        
+        marcarComoConcluida: function(index) {
+          if (index >= 0 && index < tarefas.length) {
+            tarefas[index].concluir(); // Concluir tarefa
+          } else {
+            console.log("Índice inválido!");
+          }
+        },
+        
+        removerTarefa: function(index) {
+          if (index >= 0 && index < tarefas.length) {
+            tarefas.splice(index, 1); // Remove tarefa
+          } else {
+            console.log("Índice inválido!");
+          }
+        },
+        
+        visualizarDetalhes: function(index) {
+          if (index >= 0 && index < tarefas.length) {
+            return tarefas[index].detalhes(); // Retorna detalhes da tarefa
+          } else {
+            return "Índice inválido!";
+          }
+        }
+      };
+    }
+
+    // Inicializa o gerenciador de tarefas
+    const gerenciador = gerenciadorDeTarefas();
+
+    // Função para adicionar uma nova tarefa a partir do formulário
+    function adicionarNovaTarefa() {
+      const nome = document.getElementById('nomeTarefa').value;
+      const descricao = document.getElementById('descricaoTarefa').value;
+      if (nome && descricao) {
+        const tarefa = criarTarefa(nome, descricao);
+        gerenciador.adicionarTarefa(tarefa);
+        atualizarListaDeTarefas();
+        // Limpa os campos de entrada
+        document.getElementById('nomeTarefa').value = '';
+        document.getElementById('descricaoTarefa').value = '';
+      } else {
+        alert("Por favor, preencha o nome e a descrição da tarefa.");
+      }
+    }
+
+    // Função para atualizar a lista de tarefas exibida na página
+    function atualizarListaDeTarefas() {
+      const lista = document.getElementById('listaTarefas');
+      lista.innerHTML = ''; // Limpa a lista antes de atualizar
+      gerenciador.listarTarefas().forEach((tarefa, index) => {
+        const li = document.createElement('li');
+        li.className = tarefa.status === 'Concluída' ? 'completed' : '';
+        li.innerHTML = `
+          ${tarefa.nome} (${tarefa.status})
+          <div class="button-group">
+            <button class="details-btn" onclick="visualizarDetalhes(${index})">Detalhes</button>
+            <button class="complete-btn" onclick="concluirTarefa(${index})">Concluir</button>
+            <button class="remove-btn" onclick="removerTarefa(${index})">Remover</button>
+          </div>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    // Função para visualizar os detalhes de uma tarefa
+    function visualizarDetalhes(index) {
+      const detalhes = gerenciador.visualizarDetalhes(index);
+      alert(detalhes); // Exibe os detalhes em um alerta
+    }
+
+    // Função para concluir uma tarefa
+    function concluirTarefa(index) {
+      gerenciador.marcarComoConcluida(index);
+      atualizarListaDeTarefas();
+    }
+
+    // Função para remover uma tarefa
+    function removerTarefa(index) {
+      gerenciador.removerTarefa(index);
+      atualizarListaDeTarefas();
+    }
+  </script>
+  <div class="container">
+    <div id="clock"></div>
+    <button class="back-button" onclick="window.history.back()">Voltar</button>
+</div>
+</body>
+</html>
+
